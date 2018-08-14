@@ -1,0 +1,156 @@
+- name: provisioning
+  hosts: all
+  tasks:
+    - name: Set timezone to Asia/Tokyo
+      shell: timedatectl set-timezone Asia/Tokyo
+      become: true
+
+    - name: yum update
+      yum: 
+        name=*
+        state=present
+      become: true
+
+    - name: Install epel
+      yum: 
+        name=epel-release
+        state=present
+      become: true
+
+    - name: Install Development Tools
+      yum:
+        name: "@Development Tools"
+        state: present
+      become: true
+
+    - name: Add nginx repository
+      yum_repository:
+        name: nginx
+        description: nginx repo
+        baseurl: "http://nginx.org/packages/centos/7/$basearch/"
+        gpgcheck: no
+        enabled: yes
+      become: true
+
+    - name: Install nginx
+      yum:
+        name: nginx
+        state: present
+      become: true
+
+    - name: Add MongoDB repository
+      yum_repository:
+        name: mongodb
+        description: nginx repo
+        baseurl: "https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.0/x86_64/"
+        gpgcheck: no
+        enabled: yes
+      become: true
+
+    - name: Install MongoDB
+      yum:
+        name: mongodb-org
+        state: present
+      become: true
+
+    - name: Start MongoDB
+      service: name=mongod enabled=Yes state=started
+      become: true
+
+    - name: Install redis
+      yum: pkg=redis state=present
+      become: true
+
+    - name: Start redis
+      service: name=redis enabled=Yes state=started
+      become: true
+
+    - name: Add remi repository
+      yum:
+        name: "https://rpms.remirepo.net/enterprise/remi-release-7.rpm"
+        state: present
+      become: true
+
+    - name: Install PHP
+      yum: pkg={{ item }} state=present enablerepo=remi,remi-php72
+      with_items:
+        - redis
+        - php
+        - php-common
+        - php-cli
+        - php-fpm
+        - php-xml
+        - php-json
+        - php-intl
+        - php-mbstring
+        - php-pdo
+        - php-pecl-zip
+        - php-pecl-igbinary
+        - php-pecl-redis
+        - php-pecl-mongodb
+      become: true
+
+    - name: Configure nginx
+      template:
+        src: ./files/default.conf
+        dest: /etc/nginx/conf.d/default.conf
+        owner: root
+        group: root
+        mode: 0644
+      become: true
+
+    - name: Configure php-fpm
+      template:
+        src: ./files/www.conf
+        dest: /etc/php-fpm.d/www.conf
+        owner: root
+        group: root
+        mode: 0644
+      become: true
+
+    - name: Start php-fpm
+      service: name=php-fpm enabled=Yes state=started
+      become: true
+
+    - name: Start nginx
+      service: name=nginx enabled=Yes state=started
+      become: true
+
+    - name: Configure /vagrant mounted hook
+      template:
+        src: ./files/80-vagrant-mounted.rules
+        dest: /etc/udev/rules.d/80-vagrant-mounted.rules
+        owner: root
+        group: root
+        mode: 0644
+      become: true
+
+    - name: Configure /vagrant mounted hook script
+      template:
+        src: ./files/.udev-vagrant-mounted.sh
+        dest: /root/.udev-vagrant-mounted.sh
+        owner: root
+        group: root
+        mode: 0700
+      become: true
+
+    - name: Create local binary directory
+      file: path=/home/vagrant/.local/bin state=directory owner=vagrant group=vagrant mode=0755
+
+    - name: Install composer
+      shell: |
+        php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+        php -r "if (hash_file('SHA384', 'composer-setup.php') === '544e09ee996cdf60ece3804abc52599c22b1f40f4323403c44d44fdfdd586475ca9813a858088ffbc1f233e9b180f061') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+        php composer-setup.php
+        php -r "unlink('composer-setup.php');"
+        mv composer.phar composer
+      args:
+        chdir: /home/vagrant/.local/bin
+
+    - name: Install nvm
+      shell: curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+
+    - name: Install Node.js
+      shell: |
+        source ~/.bashrc
+        nvm install v8

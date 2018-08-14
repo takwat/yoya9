@@ -1,0 +1,12 @@
+/.vagrant/
+/logs/*log
+/node_modules
+/vendor
+/.idea
+/.vscode
+npm-debug.log
+yarn-error.log
+.env
+composer.lock
+package.lock
+.DS_Store
