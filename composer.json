@@ -1,5 +1,9 @@
 {
     "name": "takwat/yoya9",
     "type": "application",
-    "require": {}
+    "require": {
+        "slim/slim": "^3.0",
+        "monolog/monolog": "^1.23",
+        "philo/laravel-blade": "^3.1"
+    }
 }
