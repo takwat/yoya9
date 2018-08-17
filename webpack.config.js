@@ -8,7 +8,6 @@ module.exports = {
 	// mode: 'production',
 	entry: path.resolve(__dirname, 'src', 'app.js'),
 	output: {
-		// path: path.resolve(__dirname, 'public', 'assets', 'js'),
 		filename: 'app.js'
 	},
 	resolve: {

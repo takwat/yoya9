@@ -1,17 +1,13 @@
 <template>
-	<div>
-		<h1>{{title}}</h1>
-	</div>
+	<p>Copyright 2018 @takwat</p>
 </template>
 <style lang='scss' scoped>
-h1{
-  font-size: 2rem;
-  border-bottom: 2px solid #999;
-}
+	p{
+		text-align: center;
+	}
 </style>
 <script>
 export default {
-	props: ['title'],
 	data () {
 		return {
 		};
