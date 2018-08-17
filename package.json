@@ -9,8 +9,30 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "vue": "^2.5.17"
   },
   "devDependencies": {
-    "webpack-cli": "^3.1.0"
+    "autoprefixer": "^9.1.1",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "css-loader": "^1.0.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^5.0.0",
+    "gulp-csscomb": "^3.0.8",
+    "gulp-group-css-media-queries": "^1.2.2",
+    "gulp-plumber": "^1.2.0",
+    "gulp-sass": "^4.0.1",
+    "gulp-sourcemaps": "^2.6.4",
+    "node-sass": "^4.9.3",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.22.1",
+    "vue-loader": "^15.3.0",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "^2.5.17",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0",
+    "webpack-stream": "^5.1.1"
   }
 }
