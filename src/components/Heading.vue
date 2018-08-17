@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h1>Hello World!</h1>
+		<h1>Hello Vue.js World!</h1>
 	</div>
 </template>
 <style lang='scss' scoped>

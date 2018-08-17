@@ -6,8 +6,12 @@ const sourcemaps = require('gulp-sourcemaps');
 const csscomb = require('gulp-csscomb');
 const grouping = require('gulp-group-css-media-queries');
 
+const webpackStream = require('webpack-stream');
+const webpack = require('webpack');
+const webpackConfig = require('./webpack.config');
+
 gulp.task('sass', () => {
-	gulp.src('sass/**/*.scss')
+	return gulp.src('sass/**/*.scss')
 	.pipe(plumber({
 		errorHandler: function(err) {
 			console.error(err);
@@ -25,8 +29,18 @@ gulp.task('sass', () => {
 	.pipe(gulp.dest('public/assets/css'));
 });
 
-gulp.task('watch', () => {
-	gulp.watch('sass/**/*.scss', ['sass']);
+gulp.task('sass:watch', () => {
+	return gulp.watch('sass/**/*.scss', ['sass']);
 });
 
-gulp.task('default', ['sass', 'watch']);
+
+gulp.task('webpack', () => {
+	return webpackStream(webpackConfig, webpack).pipe(gulp.dest('public/assets/js'));
+});
+
+gulp.task('webpack:watch', () => {
+	return gulp.watch(['src/**/*.js', 'src/**/*.vue'], ['webpack']);
+});
+
+
+gulp.task('default', ['sass', 'webpack', 'sass:watch', 'webpack:watch']);

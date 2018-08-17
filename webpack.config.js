@@ -2,11 +2,13 @@ const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
 
 module.exports = {
-	// mode: 'development',
-	mode: 'production',
-	entry: path.resolve(__dirname, 'js', 'app.js'),
+	// watch: true,
+
+	mode: 'development',
+	// mode: 'production',
+	entry: path.resolve(__dirname, 'src', 'app.js'),
 	output: {
-		path: path.resolve(__dirname, 'public', 'assets', 'js'),
+		// path: path.resolve(__dirname, 'public', 'assets', 'js'),
 		filename: 'app.js'
 	},
 	resolve: {
