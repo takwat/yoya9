@@ -10,3 +10,4 @@ yarn-error.log
 composer.lock
 package.lock
 .DS_Store
+/.nuxt
